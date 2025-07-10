@@ -1,9 +1,7 @@
 streamlit
 yt-dlp
 openai-whisper
-moviepy
 transformers
 torch
 torchaudio
-opencv-python-headless
 ffmpeg-python
