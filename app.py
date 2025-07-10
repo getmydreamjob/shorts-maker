@@ -46,15 +46,14 @@ def crop_and_generate(video_path, segment, index):
     uid = uuid.uuid4().hex
     output_dir = "tiktok_clips"
     os.makedirs(output_dir, exist_ok=True)
-    cropped = f"{output_dir}/clip_{uid}.mp4"
     subtitle_file = f"{output_dir}/subs_{uid}.srt"
     final_output = f"{output_dir}/final_{uid}.mp4"
 
-    # Create SRT file
+    # Generate SRT subtitle file
     with open(subtitle_file, "w") as f:
         f.write(f"1\n00:00:00,000 --> 00:00:{int(end - start)*1000}\n{text}\n")
 
-    # Crop to vertical 9:16 and overlay subtitles
+    # Crop to 9:16 with face area centered (horizontal crop) and overlay subtitles
     ffmpeg_cmd = [
         "ffmpeg",
         "-y",
@@ -80,7 +79,7 @@ def generate_tiktok_clips(url):
     highlights = detect_highlights(segments, classifier)
 
     output_paths = []
-    for i, h in enumerate(highlights[:3]):
+    for i, h in enumerate(highlights[:3]):  # Limit to top 3 highlights
         path = crop_and_generate(video_file, h, i)
         output_paths.append(path)
 
